@@ -1,18 +1,8 @@
 defmodule Hangman do
   @moduledoc """
-  Documentation for `Hangman`.
+  API Interface for the Hangman game.
   """
+  alias Hangman.Game
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Hangman.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
+  defdelegate new_game(), to: Game
 end
