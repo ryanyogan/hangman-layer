@@ -4,9 +4,22 @@ defmodule Hangman.Game do
             letters: [],
             used: MapSet.new()
 
+  @doc """
+  Game.new_game/0 will take a random word from the Dictionary
+  module, create new game, and split the letters into the game's
+  state.
+  """
   def new_game() do
+    new_game(Dictionary.random_word())
+  end
+
+  @doc """
+  Game.new_game/1 makes testing easier as testing random
+  anything is not a safe test.
+  """
+  def new_game(word) do
     %__MODULE__{
-      letters: Dictionary.random_word() |> String.codepoints()
+      letters: word |> String.codepoints()
     }
   end
 
@@ -25,9 +38,26 @@ defmodule Hangman.Game do
 
   defp accept_move(game, guess, _already_guessed) do
     Map.put(game, :used, MapSet.put(game.used, guess))
+    |> score_guess(Enum.member?(game.letters, guess))
+  end
+
+  defp score_guess(game, _good_guess = true) do
+    new_state =
+      MapSet.new(game.letters)
+      |> MapSet.subset?(game.used)
+      |> maybe_won?()
+
+    Map.put(game, :game_state, new_state)
+  end
+
+  defp score_guess(game, _bad_guess) do
+    game
   end
 
   defp tally(_game) do
     123
   end
+
+  defp maybe_won?(true), do: :won
+  defp maybe_won?(_), do: :good_guess
 end
