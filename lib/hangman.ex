@@ -3,7 +3,8 @@ defmodule Hangman do
   API Interface for the Hangman game.
   """
   def new_game() do
-    Hangman.Server.start_link()
+    {:ok, pid} = DynamicSupervisor.start_child(Hangman.Supervisor, Hangman.Server)
+    pid
   end
 
   def make_move(game_pid, guess) do

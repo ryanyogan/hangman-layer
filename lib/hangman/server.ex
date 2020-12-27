@@ -8,6 +8,16 @@ defmodule Hangman.Server do
     GenServer.start_link(@me, nil)
   end
 
+  def child_spec(_opts) do
+    %{
+      id: Hangman.Server,
+      start: {__MODULE__, :start_link, []},
+      shutdown: 5_000,
+      restart: :permanent,
+      type: :worker
+    }
+  end
+
   @impl true
   def init(_opts) do
     {:ok, Game.new_game()}
