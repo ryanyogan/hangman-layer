@@ -7,7 +7,10 @@ defmodule Hangman.MixProject do
       version: "0.1.0",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      description: description(),
+      package: package(),
+      deps: deps(),
+      name: "Hangman"
     ]
   end
 
@@ -22,7 +25,19 @@ defmodule Hangman.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:dictionary, path: "../dictionary"}
+      {:dictionary, "~> 0.1.0"}
+    ]
+  end
+
+  defp description() do
+    "This is the core layer of the Hangman server"
+  end
+
+  defp package() do
+    [
+      name: "hangman",
+      licenses: ["Apache-2.0"],
+      links: %{"GitHub" => "https://github.com/ryanyogan/hangman-layer"}
     ]
   end
 end
